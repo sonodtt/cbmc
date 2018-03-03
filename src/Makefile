@@ -1,10 +1,10 @@
-DIRS = ansi-c big-int cbmc jbmc cpp goto-cc goto-instrument goto-programs \
-       goto-symex langapi pointer-analysis solvers util linking xmllang \
-       assembler analyses java_bytecode \
+DIRS = ansi-c big-int cbmc ccover jbmc cpp goto-cc goto-instrument \
+       goto-programs goto-symex langapi pointer-analysis solvers util \
+       linking xmllang assembler analyses java_bytecode \
        json goto-analyzer jsil goto-diff clobber \
        memory-models miniz
 
-all: cbmc.dir jbmc.dir goto-cc.dir goto-instrument.dir \
+all: cbmc.dir ccover.dir jbmc.dir goto-cc.dir goto-instrument.dir \
      goto-analyzer.dir goto-diff.dir
 
 ###############################################################################
@@ -34,6 +34,8 @@ goto-instrument.dir: languages goto-programs.dir pointer-analysis.dir \
 cbmc.dir: languages solvers.dir goto-symex.dir analyses.dir \
           pointer-analysis.dir goto-programs.dir linking.dir \
           goto-instrument.dir
+
+ccover.dir: cbmc.dir
 
 jbmc.dir: java_bytecode.dir cbmc.dir
 
