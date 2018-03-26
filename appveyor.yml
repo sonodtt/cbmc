@@ -5,6 +5,8 @@ environment:
   BUILD_ENV: MSVC
   PATH: C:\projects\cbmc\deps\bin;%PATH%
   INCLUDE: C:\projects\cbmc\deps\include
+init:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1')) 
 install:
 - ps: |
     #check if dependencies were copied from cache, if not, download them.
