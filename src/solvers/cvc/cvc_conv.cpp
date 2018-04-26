@@ -248,11 +248,12 @@ void cvc_convt::convert_plus_expr(const exprt &expr)
       else
         throw "unexpected mixture in pointer arithmetic";
 
+      auto pointer_bits = pointer_offset_bits(pointer_type(void_type()), ns);
+      CHECK_RETURN(pointer_bits.has_value());
+
       out << "(LET P: " << cvc_pointer_type() << " = ";
       convert_expr(*p);
-      out << " IN P WITH .offset:=BVPLUS("
-          << pointer_offset_bits(pointer_type(void_type()), ns)
-          << ", P.offset, ";
+      out << " IN P WITH .offset:=BVPLUS(" << *pointer_bits << ", P.offset, ";
       convert_expr(*i);
       out << "))";
     }
@@ -493,11 +494,9 @@ void cvc_convt::convert_literal(const literalt l)
 
 std::string cvc_convt::cvc_pointer_type() const
 {
-  return
-    "[# object: INT, offset: BITVECTOR("+
-    std::to_string(
-      integer2size_t(
-        pointer_offset_bits(pointer_type(void_type()), ns)))+") #]";
+  auto pointer_bits = pointer_offset_bits(pointer_type(void_type()), ns);
+  return "[# object: INT, offset: BITVECTOR(" +
+         std::to_string(integer2size_t(*pointer_bits)) + ") #]";
 }
 
 void cvc_convt::convert_array_index(const exprt &expr)
@@ -556,9 +555,9 @@ void cvc_convt::convert_address_of_rec(const exprt &expr)
       else
         assert(false);
 
-      out << " IN P WITH .offset:=BVPLUS("
-                   << pointer_offset_bits(pointer_type(void_type()), ns)
-                   << ", P.offset, ";
+      auto pointer_bits = pointer_offset_bits(pointer_type(void_type()), ns);
+
+      out << " IN P WITH .offset:=BVPLUS(" << *pointer_bits << ", P.offset, ";
       convert_expr(index);
       out << "))";
     }
@@ -579,17 +578,15 @@ void cvc_convt::convert_address_of_rec(const exprt &expr)
     const irep_idt &component_name=
       to_member_expr(expr).get_component_name();
 
-    mp_integer offset=member_offset(
-      to_struct_type(struct_op.type()),
-      component_name,
-      ns);
-    assert(offset>=0);
+    auto offset =
+      member_offset(to_struct_type(struct_op.type()), component_name, ns);
+    CHECK_RETURN(offset.has_value());
 
-    exprt index=from_integer(offset, size_type());
+    exprt index = from_integer(*offset, size_type());
 
-    out << " IN P WITH .offset:=BVPLUS("
-                 << pointer_offset_bits(pointer_type(void_type()), ns)
-                 << ", P.offset, ";
+    auto pointer_bits = pointer_offset_bits(pointer_type(void_type()), ns);
+
+    out << " IN P WITH .offset:=BVPLUS(" << *pointer_bits << ", P.offset, ";
     convert_expr(index);
     out << "))";
   }

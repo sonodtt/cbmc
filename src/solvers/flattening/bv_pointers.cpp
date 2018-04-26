@@ -146,11 +146,10 @@ bool bv_pointerst::convert_address_of_rec(
       UNREACHABLE;
 
     // get size
-    mp_integer size=
-      pointer_offset_size(array_type.subtype(), ns);
-    DATA_INVARIANT(size>0, "array subtype expected to have non-zero size");
+    auto size = pointer_offset_size(array_type.subtype(), ns);
+    CHECK_RETURN(size.has_value() && *size > 0);
 
-    offset_arithmetic(bv, size, index);
+    offset_arithmetic(bv, *size, index);
     CHECK_RETURN(bv.size()==bits);
     return false;
   }
@@ -181,13 +180,12 @@ bool bv_pointerst::convert_address_of_rec(
 
     if(struct_op_type.id()==ID_struct)
     {
-      mp_integer offset=member_offset(
-        to_struct_type(struct_op_type),
-        member_expr.get_component_name(), ns);
-      DATA_INVARIANT(offset>=0, "member offset expected to be positive");
+      auto offset = member_offset(
+        to_struct_type(struct_op_type), member_expr.get_component_name(), ns);
+      CHECK_RETURN(offset.has_value());
 
       // add offset
-      offset_arithmetic(bv, offset);
+      offset_arithmetic(bv, *offset);
     }
     else if(struct_op_type.id()==ID_union)
     {
@@ -350,8 +348,10 @@ bvt bv_pointerst::convert_pointer_type(const exprt &expr)
         typet pointer_sub_type=it->type().subtype();
         if(pointer_sub_type.id()==ID_empty)
           pointer_sub_type=char_type();
-        size=pointer_offset_size(pointer_sub_type, ns);
-        CHECK_RETURN(size>0);
+
+        auto size_opt = pointer_offset_size(pointer_sub_type, ns);
+        CHECK_RETURN(size_opt.has_value() && *size_opt > 0);
+        size = *size_opt;
       }
     }
 
@@ -425,10 +425,10 @@ bvt bv_pointerst::convert_pointer_type(const exprt &expr)
     typet pointer_sub_type=expr.op0().type().subtype();
     if(pointer_sub_type.id()==ID_empty)
       pointer_sub_type=char_type();
-    mp_integer element_size=pointer_offset_size(pointer_sub_type, ns);
-    DATA_INVARIANT(element_size>0, "object size expected to be positive");
+    auto element_size = pointer_offset_size(pointer_sub_type, ns);
+    CHECK_RETURN(element_size.has_value() && *element_size > 0);
 
-    offset_arithmetic(bv, element_size, neg_op1);
+    offset_arithmetic(bv, *element_size, neg_op1);
 
     return bv;
   }
@@ -490,13 +490,13 @@ bvt bv_pointerst::convert_bitvector(const exprt &expr)
     typet pointer_sub_type=expr.op0().type().subtype();
     if(pointer_sub_type.id()==ID_empty)
       pointer_sub_type=char_type();
-    mp_integer element_size=pointer_offset_size(pointer_sub_type, ns);
-    DATA_INVARIANT(element_size>0, "object size expected to be positive");
 
-    if(element_size!=1)
+    auto element_size = pointer_offset_size(pointer_sub_type, ns);
+    CHECK_RETURN(element_size.has_value() && *element_size > 0);
+
+    if(*element_size != 1)
     {
-      bvt element_size_bv=
-        bv_utils.build_constant(element_size, bv.size());
+      bvt element_size_bv = bv_utils.build_constant(*element_size, bv.size());
       bv=bv_utils.divider(
         bv, element_size_bv, bv_utilst::representationt::SIGNED);
     }
