@@ -17,8 +17,7 @@ OBJ += ../ansi-c/ansi-c$(LIBEXT) \
        ../goto-symex/rewrite_union$(OBJEXT) \
        ../pointer-analysis/dereference$(OBJEXT) \
        ../goto-instrument/dump_c$(OBJEXT) \
-       ../goto-instrument/goto_program2code$(OBJEXT) \
-       ../miniz/miniz$(OBJEXT)
+       ../goto-instrument/goto_program2code$(OBJEXT)
 
 INCLUDES= -I ..
 
@@ -30,16 +29,6 @@ include ../common
 CLEANFILES = clobber$(EXEEXT)
 
 all: clobber$(EXEEXT)
-
-ifneq ($(wildcard ../specc/Makefile),)
-  OBJ += ../specc/specc$(LIBEXT)
-  CP_CXXFLAGS += -DHAVE_SPECC
-endif
-
-ifneq ($(wildcard ../php/Makefile),)
-  OBJ += ../php/php$(LIBEXT)
-  CP_CXXFLAGS += -DHAVE_PHP
-endif
 
 ###############################################################################
 

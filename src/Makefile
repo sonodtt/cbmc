@@ -1,10 +1,10 @@
-DIRS = ansi-c big-int cbmc jbmc cpp goto-cc goto-instrument goto-programs \
+DIRS = ansi-c big-int cbmc cpp goto-cc goto-instrument goto-programs \
        goto-symex langapi pointer-analysis solvers util linking xmllang \
-       assembler analyses java_bytecode \
+       assembler analyses \
        json goto-analyzer jsil goto-diff clobber \
-       memory-models miniz
+       memory-models
 
-all: cbmc.dir jbmc.dir goto-cc.dir goto-instrument.dir \
+all: cbmc.dir goto-cc.dir goto-instrument.dir \
      goto-analyzer.dir goto-diff.dir
 
 ###############################################################################
@@ -19,10 +19,8 @@ $(patsubst %, %.dir, $(filter-out big-int util, $(DIRS))): util.dir
 
 cpp.dir: ansi-c.dir linking.dir
 
-java_bytecode.dir: miniz.dir
-
 languages: util.dir langapi.dir \
-           cpp.dir ansi-c.dir xmllang.dir assembler.dir java_bytecode.dir \
+           cpp.dir ansi-c.dir xmllang.dir assembler.dir \
            jsil.dir
 
 solvers.dir: util.dir langapi.dir
@@ -34,8 +32,6 @@ goto-instrument.dir: languages goto-programs.dir pointer-analysis.dir \
 cbmc.dir: languages solvers.dir goto-symex.dir analyses.dir \
           pointer-analysis.dir goto-programs.dir linking.dir \
           goto-instrument.dir
-
-jbmc.dir: java_bytecode.dir cbmc.dir
 
 goto-analyzer.dir: languages analyses.dir goto-programs.dir linking.dir \
                    json.dir goto-instrument.dir
@@ -87,14 +83,6 @@ glucose-download:
 	@mv glucose-syrup ../
 	@(cd ../glucose-syrup; patch -p1 < ../scripts/glucose-syrup-patch)
 	@rm glucose-syrup.tgz
-
-cprover-jar-build:
-	@echo "Building org.cprover.jar"
-	@(cd java_bytecode/library/; \
-	mkdir -p target; \
-	javac -d target/ `find src/ -name "*.java"`; \
-	cd target; jar cf org.cprover.jar `find . -name "*.class"`; \
-	mv org.cprover.jar ../../../)
 
 ipasir-download:
 	# get the 2016 version of the ipasir package, which contains a few solvers

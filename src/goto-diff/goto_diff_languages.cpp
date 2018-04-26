@@ -20,8 +20,6 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <specc/specc_language.h>
 #endif
 
-#include <java_bytecode/java_bytecode_language.h>
-
 void goto_diff_languagest::register_languages()
 {
   register_language(new_ansi_c_language);
@@ -30,6 +28,4 @@ void goto_diff_languagest::register_languages()
   #ifdef HAVE_SPECC
   register_language(new_specc_language);
   #endif
-
-  register_language(new_java_bytecode_language);
 }
