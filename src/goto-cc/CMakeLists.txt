@@ -17,6 +17,7 @@ target_link_libraries(goto-cc-lib
     xml
     assembler
     langapi
+    json
 )
 
 add_if_library(goto-cc-lib jsil)

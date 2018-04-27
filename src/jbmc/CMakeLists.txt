@@ -17,7 +17,6 @@ target_link_libraries(jbmc-lib
     goto-instrument-lib
     goto-programs
     goto-symex
-    java_bytecode
     json
     langapi
     linking

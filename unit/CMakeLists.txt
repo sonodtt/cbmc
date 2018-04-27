@@ -2,6 +2,12 @@ file(GLOB_RECURSE sources "*.cpp" "*.h")
 
 file(GLOB_RECURSE testing_utils "testing-utils/*.cpp" "testing-utils/*.h")
 
+file(GLOB_RECURSE java_bytecode "java_bytecode/*.cpp" "java_bytecode/*.h")
+file(GLOB_RECURSE goto_program_generics
+    "goto-programs/goto_program_generics/*.cpp"
+    "goto-programs/goto_program_generics/*.h"
+)
+
 list(REMOVE_ITEM sources
     # Used in executables
     ${CMAKE_CURRENT_SOURCE_DIR}/miniBDD.cpp
@@ -21,6 +27,22 @@ list(REMOVE_ITEM sources
 
     # Will be built into a separate library and linked
     ${testing_utils}
+
+    # java_bytecode usage is being remove
+    ${java_bytecode}
+    ${goto_program_generics}
+    ${CMAKE_CURRENT_SOURCE_DIR}/analyses/dependence_graph.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/goto-programs/class_hierarchy_output.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/goto-programs/class_hierarchy_graph.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/goto-programs/remove_virtual_functions_without_fallback.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/pointer-analysis/custom_value_set_analysis.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/solvers/refinement/string_constraint_instantiation/instantiate_not_contains.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/solvers/refinement/string_refinement/dependency_graph.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/solvers/refinement/string_refinement/string_symbol_resolution.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/util/has_subtype.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/util/parameter_indices.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/util/simplify_expr.cpp
+
 
     # Intended to fail to compile
     ${CMAKE_CURRENT_SOURCE_DIR}/util/expr_cast/expr_undefined_casts.cpp
