@@ -2290,6 +2290,23 @@ exprt c_typecheck_baset::do_special_functions(
 
     return malloc_expr;
   }
+  else if(identifier==CPROVER_PREFIX "r_ok" ||
+          identifier==CPROVER_PREFIX "w_ok")
+  {
+    if(expr.arguments().size()!=1)
+    {
+      err_location(f_op);
+      error() << identifier << " expects one operand" << eom;
+      throw 0;
+    }
+
+    irep_idt id=identifier==CPROVER_PREFIX "r_ok"?ID_r_ok:ID_w_ok;
+
+    unary_predicate_exprt ok_expr(id, expr.arguments().front());
+    ok_expr.add_source_location()=source_location;
+
+    return ok_expr;
+  }
   else if(identifier==CPROVER_PREFIX "isinff" ||
           identifier==CPROVER_PREFIX "isinfd" ||
           identifier==CPROVER_PREFIX "isinfld" ||
