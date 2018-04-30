@@ -41,10 +41,13 @@ public:
   /// Terminates the program if file doesn't exist
   /// \param filename Name of the file in the archive
   std::string get_entry(const std::string &filename);
+
   /// Get contents of the Manifest file in the jar archive
   std::unordered_map<std::string, std::string> get_manifest();
+
   /// Get list of filenames in the archive
   std::vector<std::string> filenames() const;
+
 private:
   /// Loads the fileindex (m_name_to_index) with a map of loaded files to
   /// indices.
