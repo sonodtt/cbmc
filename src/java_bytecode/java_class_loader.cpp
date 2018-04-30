@@ -14,6 +14,12 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include "java_bytecode_parser.h"
 
+#ifdef _WIN32
+#define DIR_SEP "\\"
+#else
+#define DIR_SEP "/"
+#endif
+
 java_bytecode_parse_treet &java_class_loadert::operator()(
   const irep_idt &class_name)
 {
@@ -53,11 +59,7 @@ java_bytecode_parse_treet &java_class_loadert::operator()(
     
     case entryt::DIRECTORY: // Look in the given directory
       const std::string full_path =
-        #ifdef _WIN32
-        entry.path + '\\' + class_file;
-        #else
-        entry.path + '/' + class_file;
-        #endif
+        entry.path + DIR_SEP + class_file;
 
       if(std::ifstream(full_path))
       {
@@ -85,6 +87,11 @@ void java_class_loadert::add_classpath_entry(const std::string &path)
   {
     new_entry.kind=entryt::JAR;
     new_entry.jar_file=jar_filet(path);
+  }
+  else if(has_suffix(path, DIR_SEP "*"))
+  {
+    // need to get all the JARs in the directory
+    PRECONDITION(false);
   }
   else
   {
