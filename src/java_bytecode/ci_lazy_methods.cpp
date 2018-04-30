@@ -34,7 +34,7 @@ ci_lazy_methodst::ci_lazy_methodst(
   const irep_idt &main_class,
   const std::vector<irep_idt> &main_jar_classes,
   const std::vector<irep_idt> &lazy_methods_extra_entry_points,
-  java_class_loadert &java_class_loader,
+  java_class_loader_dept &java_class_loader,
   const std::vector<irep_idt> &extra_instantiated_classes,
   const select_pointer_typet &pointer_type_selector,
   message_handlert &message_handler,

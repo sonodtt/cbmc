@@ -20,7 +20,7 @@
 #include <util/message.h>
 #include <goto-programs/class_hierarchy.h>
 #include <java_bytecode/java_bytecode_parse_tree.h>
-#include <java_bytecode/java_class_loader.h>
+#include <java_bytecode/java_class_loader_dep.h>
 #include <java_bytecode/ci_lazy_methods_needed.h>
 #include <java_bytecode/select_pointer_type.h>
 #include <java_bytecode/synthetic_methods_map.h>
@@ -97,7 +97,7 @@ public:
     const irep_idt &main_class,
     const std::vector<irep_idt> &main_jar_classes,
     const std::vector<irep_idt> &lazy_methods_extra_entry_points,
-    java_class_loadert &java_class_loader,
+    java_class_loader_dept &java_class_loader,
     const std::vector<irep_idt> &extra_instantiated_classes,
     const select_pointer_typet &pointer_type_selector,
     message_handlert &message_handler,
@@ -163,7 +163,7 @@ private:
   irep_idt main_class;
   std::vector<irep_idt> main_jar_classes;
   std::vector<irep_idt> lazy_methods_extra_entry_points;
-  java_class_loadert &java_class_loader;
+  java_class_loader_dept &java_class_loader;
   const std::vector<irep_idt> &extra_instantiated_classes;
   const select_pointer_typet &pointer_type_selector;
   const synthetic_methods_mapt &synthetic_methods;

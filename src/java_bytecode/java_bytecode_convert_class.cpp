@@ -64,7 +64,7 @@ public:
   ///   This will allow insertion of Java methods into library classes to
   ///   handle, for example, modelling dependency injection.
   void operator()(
-    const java_class_loadert::parse_tree_with_overlayst &parse_trees)
+    const java_class_loader_dept::parse_tree_with_overlayst &parse_trees)
   {
     PRECONDITION(!parse_trees.empty());
     const java_bytecode_parse_treet &parse_tree = parse_trees.front();
@@ -871,7 +871,7 @@ bool java_bytecode_convert_classt::is_overlay_method(const methodt &method)
 }
 
 bool java_bytecode_convert_class(
-  const java_class_loadert::parse_tree_with_overlayst &parse_trees,
+  const java_class_loader_dept::parse_tree_with_overlayst &parse_trees,
   symbol_tablet &symbol_table,
   message_handlert &message_handler,
   size_t max_array_length,

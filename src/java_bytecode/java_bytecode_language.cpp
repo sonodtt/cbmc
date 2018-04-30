@@ -583,8 +583,9 @@ bool java_bytecode_languaget::typecheck(
   // Must load java.lang.Object first to avoid stubbing
   // This ordering could alternatively be enforced by
   // moving the code below to the class loader.
-  java_class_loadert::parse_tree_with_overridest_mapt::const_iterator it =
+  java_class_loader_dept::parse_tree_with_overridest_mapt::const_iterator it =
     java_class_loader.get_class_with_overlays_map().find("java.lang.Object");
+
   if(it != java_class_loader.get_class_with_overlays_map().end())
   {
     if(
@@ -1005,7 +1006,7 @@ bool java_bytecode_languaget::final(symbol_table_baset &symbol_table)
 
 void java_bytecode_languaget::show_parse(std::ostream &out)
 {
-  java_class_loadert::parse_tree_with_overlayst &parse_trees =
+  java_class_loader_dept::parse_tree_with_overlayst &parse_trees =
     java_class_loader(main_class);
   parse_trees.front().output(out);
   if(parse_trees.size() > 1)

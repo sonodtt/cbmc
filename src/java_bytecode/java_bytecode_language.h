@@ -19,7 +19,7 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include "ci_lazy_methods.h"
 #include "ci_lazy_methods_needed.h"
-#include "java_class_loader.h"
+#include "java_class_loader_dep.h"
 #include "java_static_initializers.h"
 #include "java_string_library_preprocess.h"
 #include "object_factory_parameters.h"
@@ -159,7 +159,7 @@ protected:
 
   irep_idt main_class;
   std::vector<irep_idt> main_jar_classes;
-  java_class_loadert java_class_loader;
+  java_class_loader_dept java_class_loader;
   bool assume_inputs_non_null;      // assume inputs variables to be non-null
   object_factory_parameterst object_factory_parameters;
   size_t max_user_array_length;     // max size for user code created arrays
