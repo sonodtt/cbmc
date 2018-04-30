@@ -7,43 +7,42 @@ Author: Diffblue Ltd
 \*******************************************************************/
 
 #include "jar_file.h"
+
 #include <cctype>
+#include <sstream>
+
 #include <util/suffix.h>
 #include <util/invariant.h>
-#include "java_class_loader_limit.h"
 
-void jar_filet::initialize_file_index(java_class_loader_limitt &limit)
+void jar_filet::initialize_file_index()
 {
   const size_t file_count=m_zip_archive.get_num_files();
+
   for(size_t index=0; index<file_count; index++)
   {
     const auto filename=m_zip_archive.get_filename(index);
-    if(!has_suffix(filename, ".class") || limit.load_class_file(filename))
+    if(!has_suffix(filename, ".class"))
       m_name_to_index.emplace(filename, index);
   }
 }
 
 /// This constructor creates a jar_file object whose contents
-/// are extracted from a memory buffer (byte array) as opposed
-/// to a jar file.
-jar_filet::jar_filet(
-  java_class_loader_limitt &limit,
-  const std::string &filename):
+/// are extracted from a file.
+jar_filet::jar_filet(const std::string &filename):
   m_zip_archive(filename)
 {
-  initialize_file_index(limit);
+  initialize_file_index();
 }
 
 /// This constructor creates a jar_file object whose contents
 /// are extracted from a memory buffer (byte array) as opposed
 /// to a jar file.
 jar_filet::jar_filet(
-  java_class_loader_limitt &limit,
   const void *data,
   size_t size):
   m_zip_archive(data, size)
 {
-  initialize_file_index(limit);
+  initialize_file_index();
 }
 
 // VS: No default move constructors or assigns
