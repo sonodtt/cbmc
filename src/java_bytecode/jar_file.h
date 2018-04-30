@@ -14,6 +14,8 @@ Author: Diffblue Ltd
 #include <string>
 #include <vector>
 
+#include <util/optional.h>
+
 #include "mz_zip_archive.h"
 
 /// Class representing a .jar archive
@@ -38,9 +40,8 @@ public:
   ~jar_filet()=default;
 
   /// Get contents of a file in the jar archive.
-  /// Terminates the program if file doesn't exist
   /// \param filename Name of the file in the archive
-  std::string get_entry(const std::string &filename);
+  optionalt<std::string> get_entry(const std::string &filename);
 
   /// Get contents of the Manifest file in the jar archive
   std::unordered_map<std::string, std::string> get_manifest();
