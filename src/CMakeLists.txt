@@ -101,6 +101,7 @@ add_subdirectory(miniz)
 add_subdirectory(clobber)
 
 add_subdirectory(cbmc)
+add_subdirectory(ccover)
 add_subdirectory(jbmc)
 add_subdirectory(goto-cc)
 add_subdirectory(goto-instrument)
