@@ -1,8 +1,29 @@
-DIRS = ansi-c big-int cbmc ccover jbmc cpp goto-cc goto-instrument \
-       goto-programs goto-symex langapi pointer-analysis solvers util \
-       linking xmllang assembler analyses java_bytecode \
-       json goto-analyzer jsil goto-diff clobber \
-       memory-models miniz
+DIRS = ansi-c \
+       big-int \
+       cbmc \
+       ccover \
+       jbmc \
+       cpp \
+       goto-cc \
+       goto-instrument \
+       goto-programs \
+       goto-symex \
+       langapi \
+       pointer-analysis \
+       solvers \
+       util \
+       linking \
+       xmllang \
+       assembler \
+       analyses \
+       java_bytecode \
+       json \
+       goto-analyzer \
+       jsil \
+       goto-diff \
+       clobber \
+       memory-models \
+       miniz
 
 all: cbmc.dir ccover.dir jbmc.dir goto-cc.dir goto-instrument.dir \
      goto-analyzer.dir goto-diff.dir
