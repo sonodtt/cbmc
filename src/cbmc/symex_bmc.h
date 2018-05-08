@@ -152,4 +152,10 @@ protected:
   symex_coveraget symex_coverage;
 };
 
+class optionst;
+
+void parse_unwinding_options(
+  const optionst &,
+  symex_bmct &);
+
 #endif // CPROVER_CBMC_SYMEX_BMC_H

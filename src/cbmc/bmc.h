@@ -180,8 +180,6 @@ protected:
     const goto_functionst &,
     prop_convt &);
 
-  // unwinding
-  virtual void setup_unwind();
   void do_conversion();
 
   virtual void freeze_program_variables();
