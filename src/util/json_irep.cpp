@@ -9,6 +9,7 @@ Author: Thomas Kiley, thomas.kiley@diffblue.com
 /// \file
 /// Util
 
+#include "invariant.h"
 #include "json_irep.h"
 
 #include "irep.h"
@@ -102,9 +103,11 @@ irept json_irept::convert_from_json(const jsont &in) const
   for(const auto &keyval : in.object)
     have_keys.push_back(keyval.first);
   std::sort(have_keys.begin(), have_keys.end());
+
+  // TODO review proper exception type appropriate for failure
   if(have_keys!=std::vector<std::string>{"comment", "id", "namedSub", "sub"})
     throw "irep JSON representation is missing one of needed keys: "
-      "'id', 'sub', 'namedSub', 'comment'";
+          "'id', 'sub', 'namedSub', 'comment'";
 
   irept out(in["id"].value);
 
