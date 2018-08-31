@@ -21,6 +21,7 @@ Author: Daniel Kroening
 #include "fixedbv.h"
 #include "std_expr.h"
 #include "config.h"
+#include "invariant.h"
 
 xmlt xml(const source_locationt &location)
 {
@@ -273,7 +274,7 @@ xmlt xml(
     {
       const struct_typet &struct_type=to_struct_type(type);
       const struct_typet::componentst &components=struct_type.components();
-      assert(components.size()==expr.operands().size());
+      CHECK_RETURN(components.size()==expr.operands().size());
 
       for(unsigned m=0; m<expr.operands().size(); m++)
       {
@@ -287,7 +288,7 @@ xmlt xml(
   {
     result.name="union";
 
-    assert(expr.operands().size()==1);
+    PRECONDITION(expr.operands().size()==1);
 
     xmlt &e=result.new_element("member");
     e.new_element(xml(expr.op0(), ns));

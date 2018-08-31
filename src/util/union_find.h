@@ -13,6 +13,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <cassert>
 #include <vector>
 
+#include "invariant.h"
 #include "numbering.h"
 
 // Standard union find with weighting and path compression.
@@ -64,7 +65,7 @@ public:
   void resize(size_type size)
   {
     // We only enlarge. Shrinking is yet to be implemented.
-    assert(nodes.size()<=size);
+    PRECONDITION(nodes.size()<=size);
     nodes.reserve(size);
     while(nodes.size()<size)
       nodes.push_back(nodet(nodes.size()));
