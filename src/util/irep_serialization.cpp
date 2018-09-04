@@ -93,6 +93,7 @@ void irep_serializationt::read_irep(
     reference_convert(in, r);
   }
 
+  // TODO this should throw a proper exception type
   if(in.get()!=0)
   {
     std::cerr << "irep not terminated\n";
@@ -149,13 +150,13 @@ std::size_t irep_serializationt::insert_on_read(
     ireps_container.ireps_on_read.resize(1+id*2,
       std::pair<bool, irept>(false, get_nil_irep()));
 
-  if(ireps_container.ireps_on_read[id].first)
-    throw "irep id read twice.";
-  else
-  {
-    ireps_container.ireps_on_read[id]=
-      std::pair<bool, irept>(true, i);
-  }
+  // TODO verify if this should throw an exception - this could be
+  // triggered by incorrect user input?
+  DATA_INVARIANT(ireps_container.ireps_on_read[id].first==false,
+                 "irep id must not be read twice");
+
+  ireps_container.ireps_on_read[id]=
+    std::pair<bool, irept>(true, i);
 
   return id;
 }
