@@ -33,4 +33,41 @@ public:
   std::string what() const noexcept;
 };
 
+// used in irep_serialisation.cpp
+class invalid_read_exceptiont{
+  std::string what() const noexcept
+  {
+    std::string res;
+    res += "\nInvalid Read\n";
+    return res;
+  }
+};
+
+// used in json_irep.cpp
+class invalid_deserialisationt{
+  std::string what() const noexcept
+  {
+    std::string res;
+    res += "\nInvalid Deserialisation\n";
+    return res;
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #endif // CPROVER_UTIL_EXCEPTION_UTILS_H
