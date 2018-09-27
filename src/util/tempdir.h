@@ -39,7 +39,7 @@ public:
   std::string old_working_directory;
 
   explicit temp_working_dirt(const std::string &name_template);
-  ~temp_working_dirt();
+  ~temp_working_dirt() noexcept(false);
 };
 
 #endif // CPROVER_UTIL_TEMPDIR_H
