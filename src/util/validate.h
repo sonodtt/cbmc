@@ -66,4 +66,42 @@ enum class validation_modet
     }                                                                          \
   } while(0)
 
+template <typename T>
+struct call_checkt
+{
+  static_assert(std::is_base_of<irept, T>::value, "");
+
+  void operator()(const irept &irep, const validation_modet vm)
+  {
+    const T &s = static_cast<const T &>(irep);
+    s.check(vm);
+  }
+};
+
+template <typename T>
+struct call_validatet
+{
+  static_assert(std::is_base_of<irept, T>::value, "");
+
+  void
+  operator()(const irept &irep, const namespacet &ns, const validation_modet vm)
+  {
+    const T &s = static_cast<const T &>(irep);
+    s.validate(ns, vm);
+  }
+};
+
+template <typename T>
+struct call_validate_fullt
+{
+  static_assert(std::is_base_of<irept, T>::value, "");
+
+  void
+  operator()(const irept &irep, const namespacet &ns, const validation_modet vm)
+  {
+    const T &s = static_cast<const T &>(irep);
+    s.validate_full(ns, vm);
+  }
+};
+
 #endif /* CPROVER_UTIL_VALIDATE_H */
