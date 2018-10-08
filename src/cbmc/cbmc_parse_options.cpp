@@ -524,6 +524,12 @@ int cbmc_parse_optionst::doit()
   if(set_properties())
     return CPROVER_EXIT_SET_PROPERTIES_FAILED;
 
+  if(cmdline.isset("validate-goto-model"))
+  {
+    const namespacet ns(goto_model.symbol_table);
+    goto_model.validate(ns, validation_modet::INVARIANT);
+  }
+
   return bmct::do_language_agnostic_bmc(
     path_strategy_chooser, options, goto_model, ui_message_handler);
 }
@@ -970,6 +976,9 @@ void cbmc_parse_optionst::help()
     " --xml-ui                     use XML-formatted output\n"
     " --xml-interface              bi-directional XML interface\n"
     " --json-ui                    use JSON-formatted output\n"
+    // NOLINTNEXTLINE(whitespace/line_length)
+    " --validate-goto-model        enable additional well-formedness checks on the\n"
+    "                              goto program\n"
     HELP_GOTO_TRACE
     HELP_FLUSH
     " --verbosity #                verbosity level\n"

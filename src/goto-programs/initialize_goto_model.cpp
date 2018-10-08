@@ -165,6 +165,12 @@ goto_modelt initialize_goto_model(
     goto_model.goto_functions,
     message_handler);
 
+  if(cmdline.isset("validate-goto-model"))
+  {
+    const namespacet ns(goto_model.symbol_table);
+    goto_model.validate(ns, validation_modet::EXCEPTION);
+  }
+
   // stupid hack
   config.set_object_bits_from_symbol_table(
     goto_model.symbol_table);
