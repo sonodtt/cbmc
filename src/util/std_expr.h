@@ -13,6 +13,7 @@ Author: Daniel Kroening, kroening@kroening.com
 /// \file util/std_expr.h
 /// API to expression classes
 
+#include "base_type.h"
 #include "expr_cast.h"
 #include "invariant.h"
 #include "mathematical_types.h"
@@ -1414,6 +1415,26 @@ public:
     binary_relation_exprt(_lhs, ID_equal, _rhs)
   {
   }
+
+  void check(const validation_modet vm = validation_modet::INVARIANT) const
+  {
+    DATA_CHECK(operands().size() == 2, "equality must have two operands");
+  }
+
+  void validate(
+    const namespacet &ns,
+    const validation_modet vm = validation_modet::INVARIANT) const
+  {
+    check(vm);
+
+    // check types
+    DATA_CHECK(
+      base_type_eq(lhs().type(), rhs().type(), ns),
+      "lhs and rhs should have same type");
+    DATA_CHECK(
+      type().id() == ID_bool,
+      "result of equal expression should be of type bool");
+  }
 };
 
 /// \brief Cast an exprt to an \ref equal_exprt
@@ -1425,16 +1446,18 @@ public:
 inline const equal_exprt &to_equal_expr(const exprt &expr)
 {
   PRECONDITION(expr.id()==ID_equal);
-  DATA_INVARIANT(expr.operands().size()==2, "Equality must have two operands");
-  return static_cast<const equal_exprt &>(expr);
+  const equal_exprt &ret = static_cast<const equal_exprt &>(expr);
+  ret.check();
+  return ret;
 }
 
 /// \copydoc to_equal_expr(const exprt &)
 inline equal_exprt &to_equal_expr(exprt &expr)
 {
   PRECONDITION(expr.id()==ID_equal);
-  DATA_INVARIANT(expr.operands().size()==2, "Equality must have two operands");
-  return static_cast<equal_exprt &>(expr);
+  equal_exprt &ret = static_cast<equal_exprt &>(expr);
+  ret.check();
+  return ret;
 }
 
 template<> inline bool can_cast_expr<equal_exprt>(const exprt &base)
