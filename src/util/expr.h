@@ -10,6 +10,9 @@ Author: Daniel Kroening, kroening@kroening.com
 #define CPROVER_UTIL_EXPR_H
 
 #include "type.h"
+#include "validate.h"
+#include "validate_expressions.h"
+#include "validate_types.h"
 
 #include <functional>
 #include <list>
@@ -208,6 +211,59 @@ public:
   source_locationt &add_source_location()
   {
     return static_cast<source_locationt &>(add(ID_C_source_location));
+  }
+
+  /// Check that the expression is well-formed (shallow checks only, i.e.,
+  /// subexpressions and its type are not checked).
+  ///
+  /// Subclasses may override this method to provide specific well-formedness
+  /// checks for the corresponding expressions.
+  ///
+  /// The validation mode indicates whether well-formedness check failures are
+  /// reported via DATA_INVARIANT violations or exceptions.
+  void check(const validation_modet vm = validation_modet::INVARIANT) const
+  {
+  }
+
+  /// Check that the expression is well-formed, assuming that its subexpressions
+  /// and type have all ready been checked for well-formedness.
+  ///
+  /// Subclasses may override this method to provide specific well-formedness
+  /// checks for the corresponding expressions.
+  ///
+  /// The validation mode indicates whether well-formedness check failures are
+  /// reported via DATA_INVARIANT violations or exceptions.
+  void validate(
+    const namespacet &ns,
+    const validation_modet vm = validation_modet::INVARIANT) const
+  {
+    check_expr_pick(*this, vm);
+  }
+
+  /// Check that the expression is well-formed (full check, including checks
+  /// of all subexpressions and the type)
+  ///
+  /// Subclasses may override this method, though in most cases the provided
+  /// implementation should be sufficient.
+  ///
+  /// The validation mode indicates whether well-formedness check failures are
+  /// reported via DATA_INVARIANT violations or exceptions.
+  void validate_full(
+    const namespacet &ns,
+    const validation_modet vm = validation_modet::INVARIANT) const
+  {
+    // first check operands (if any)
+    for(const exprt &op : operands())
+    {
+      validate_expr_full_pick(op, ns, vm);
+    }
+
+    // type may be nil
+    const typet &t = type();
+
+    validate_type_full_pick(t, ns, vm);
+
+    validate_expr_pick(*this, ns, vm);
   }
 
 protected:
