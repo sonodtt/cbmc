@@ -20,10 +20,11 @@ Author: Daniel Kroening, kroening@kroening.com
 
 #include <util/invariant.h>
 #include <util/namespace.h>
-#include <util/symbol_table.h>
 #include <util/source_location.h>
-#include <util/std_expr.h>
 #include <util/std_code.h>
+#include <util/std_expr.h>
+#include <util/symbol_table.h>
+#include <util/validate.h>
 
 /// The type of an instruction in a GOTO program.
 enum goto_program_instruction_typet
@@ -407,6 +408,19 @@ public:
     {
       validate_code_full_pick(code, ns, vm);
       validate_expr_full_pick(guard, ns, vm);
+
+      switch(type)
+      {
+      case ASSIGN:
+        DATA_CHECK(
+          code.get_statement() == ID_assign,
+          "assign instruction should contain an assign statement");
+        DATA_CHECK(
+          targets.empty(), "assign instruction should not have a target");
+        break;
+      default:
+        break;
+      }
     }
   };
 
