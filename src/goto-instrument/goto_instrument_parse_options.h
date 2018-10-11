@@ -101,6 +101,8 @@ Author: Daniel Kroening, kroening@kroening.com
   OPT_GOTO_PROGRAM_STATS \
   "(show-local-safe-pointers)(show-safe-dereferences)" \
   OPT_REPLACE_CALLS \
+  "(validate-goto-binary)" \
+  "(validate-goto-model)" \
   // empty last line
 
 // clang-format on

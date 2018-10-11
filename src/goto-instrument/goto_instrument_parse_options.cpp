@@ -125,7 +125,28 @@ int goto_instrument_parse_optionst::doit()
 
     get_goto_program();
 
+    {
+      const bool b = cmdline.isset("validate-goto-binary");
+
+      if(b || cmdline.isset("validate-goto-model"))
+      {
+        const namespacet ns(goto_model.symbol_table);
+        goto_model.validate(ns, validation_modet::EXCEPTION);
+
+        if(b)
+        {
+          return CPROVER_EXIT_SUCCESS;
+        }
+      }
+    }
+
     instrument_goto_program();
+
+    if(cmdline.isset("validate-goto-model"))
+    {
+      const namespacet ns(goto_model.symbol_table);
+      goto_model.validate(ns, validation_modet::INVARIANT);
+    }
 
     {
       bool unwind_given=cmdline.isset("unwind");
@@ -1569,6 +1590,12 @@ void goto_instrument_parse_optionst::help()
     " --show-local-safe-pointers   show pointer expressions that are trivially dominated by a not-null check\n" // NOLINT(*)
     " --show-safe-dereferences     show pointer expressions that are trivially dominated by a not-null check\n" // NOLINT(*)
     "                              *and* used as a dereference operand\n" // NOLINT(*)
+    // NOLINTNEXTLINE(whitespace/line_length)
+    " --validate-goto-model        enable additional well-formedness checks on the\n"
+    "                              goto program\n"
+    // NOLINTNEXTLINE(whitespace/line_length)
+    " --validate-goto-binary       check the well-formedness of the passed in goto\n"
+    "                              binary and then exit\n"
     "\n"
     "Safety checks:\n"
     " --no-assertions              ignore user assertions\n"
