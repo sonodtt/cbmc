@@ -52,6 +52,7 @@ Author: Daniel Kroening, kroening@kroening.com
 #include <goto-programs/show_properties.h>
 #include <goto-programs/string_abstraction.h>
 #include <goto-programs/string_instrumentation.h>
+#include <goto-programs/validate_goto_modelt.h>
 
 #include <goto-symex/rewrite_union.h>
 
@@ -588,6 +589,41 @@ int cbmc_parse_optionst::get_goto_program(
 
     if(cbmc_parse_optionst::process_goto_program(goto_model, options, log))
       return CPROVER_EXIT_INTERNAL_ERROR;
+
+#if 1
+    // NB command line new parameter not implemented as trivial - and until
+    // had a look at Dan's skeleton
+
+    // NB error reporting not implemented until internal discussion about
+    // desired method:
+    // - report all found without halting?
+    // - as there are likely to be multiple points of entry, perhaps
+    //   simply report a set of errors from each method? Would
+    // - store all errors until a report_errors() call (flexible w.r. to any
+    //   set of internal methods calls in validate_goto_model()
+
+    // unimplemented: 'check returns' also enabling 'check no fn pointers'
+    // would like to debate if state of 'check no fn pointers' should be stored
+    // to remove possible re-call of this check. We discussed the possibility
+    // of sets of these methods being called from different locations.
+    // (these are class methods, we have the luxury of storing state)
+    // We are however unlikely to keep around a single instance of this class.
+
+    // Am aware of true/false rtn debate. Currently use true for success/pass.
+    // I would like to prompt some feedback on method names above in case
+    // of returning false - e.g.
+    // a. preserve names but return opposite of implied
+    // b. or remove 'state' from name e.g. just use 'check_entry_point'
+    // c. or 'double negative' style e.g. 'entry_point_not_exists' - and return
+    // false when it does.
+    bool checks_passed = validate_goto_model(
+      goto_model,
+      ui_message_handler,
+      ui_message_handler.get_ui()
+    );
+
+    CHECK_RETURN(checks_passed); // verifying this demo implementation
+#endif
 
     // show it?
     if(cmdline.isset("show-loops"))
