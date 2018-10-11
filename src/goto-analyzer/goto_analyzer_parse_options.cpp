@@ -406,6 +406,12 @@ int goto_analyzer_parse_optionst::doit()
   if(process_goto_program(options))
     return CPROVER_EXIT_INTERNAL_ERROR;
 
+  if(cmdline.isset("validate-goto-model"))
+  {
+    const namespacet ns(goto_model.symbol_table);
+    goto_model.validate(ns, validation_modet::INVARIANT);
+  }
+
   // show it?
   if(cmdline.isset("show-symbol-table"))
   {
@@ -875,6 +881,9 @@ void goto_analyzer_parse_optionst::help()
     HELP_GOTO_CHECK
     "\n"
     "Other options:\n"
+    // NOLINTNEXTLINE(whitespace/line_length)
+    " --validate-goto-model        enable additional well-formedness checks on the\n"
+    "                              goto program\n"
     " --version                    show version and exit\n"
     HELP_FLUSH
     HELP_TIMESTAMP

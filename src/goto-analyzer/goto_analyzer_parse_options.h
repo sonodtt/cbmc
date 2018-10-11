@@ -148,6 +148,7 @@ class optionst;
   "(show)(verify)(simplify):" \
   "(location-sensitive)(concurrent)" \
   "(no-simplify-slicing)" \
+  "(validate-goto-model)" \
 // clang-format on
 
 class goto_analyzer_parse_optionst:
