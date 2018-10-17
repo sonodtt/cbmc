@@ -16,6 +16,7 @@ Date: June 2003
 
 #include "goto_function.h"
 
+#include "validate_goto_model.h"
 #include <util/cprover_prefix.h>
 
 /// A collection of goto functions
@@ -121,6 +122,9 @@ public:
   /// reported via DATA_INVARIANT violations or exceptions.
   void validate(const namespacet &ns, const validation_modet vm) const
   {
+#if 1
+    validate_goto_model(*this, vm);
+#endif
     for(const auto &entry : function_map)
     {
       const goto_functiont &goto_function = entry.second;

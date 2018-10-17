@@ -592,6 +592,14 @@ int cbmc_parse_optionst::get_goto_program(
     if(cbmc_parse_optionst::process_goto_program(goto_model, options, log))
       return CPROVER_EXIT_INTERNAL_ERROR;
 
+#if 1 // TODO remove this call location once appropriate                       \
+  // optional flags are set                                                    \
+  // (currently with '--validate-goto-model' fails due to finding              \
+  // fn pointers                                                               \
+  // At this location all checks pass
+    validate_goto_model(goto_model.goto_functions, validation_modet::INVARIANT);
+#endif
+
     // show it?
     if(cmdline.isset("show-loops"))
     {
