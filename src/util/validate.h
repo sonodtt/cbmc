@@ -15,6 +15,8 @@ Author: Daniel Poetzl
 #include "invariant.h"
 #include "irep.h"
 
+class namespacet;
+
 enum class validation_modet
 {
   INVARIANT,
